@@ -20,7 +20,7 @@ func getNum(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	par, err := strconv.Atoi(params["num"])
-	if err == nil {
+	if err != nil {
 		// fmt.Println(par)
 	}
 	type Resp struct {
