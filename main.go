@@ -1,43 +1,16 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+	"FirstGolangProject/handlers"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"strconv"
-
-	"github.com/gorilla/mux"
 )
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/{num:[0-9]+}", Logger(getNum)).Methods("GET")
+	r.HandleFunc("/{num:[0-9]+}", Logger(handlers.GetNum)).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8080", r))
-}
-
-func getNum(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-	par, err := strconv.Atoi(params["num"])
-	if err != nil {
-		// fmt.Println(par)
-	}
-	type Resp struct {
-		Result int
-	}
-
-	res := Resp{
-		Result: par * par,
-	}
-	// fmt.Println(res)
-
-	b, err := json.Marshal(res)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-	w.WriteHeader(http.StatusOK)
-	w.Write(b)
 }
 
 func Logger(next http.HandlerFunc) http.HandlerFunc {
